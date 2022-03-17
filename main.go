@@ -27,6 +27,6 @@ func main() {
 		fmt.Println("Thermometer 2 : ", <-usb2)
 		payload := fmt.Sprintf("Thermometer 1 : %v, Thermometer 2 : %v", <-usb1, <-usb2)
 		fmt.Println(payload)
-		raspi.Publish(raspiClient, "/demo/pp/1", payload)
+		raspi.Publish(raspiClient, "/demo/pp/2", payload)
 	}
 }
