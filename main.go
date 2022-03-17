@@ -16,14 +16,17 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	usb1 := make(chan float32)
 	usb2 := make(chan float32)
-	raspi1 := raspberry.NewRaspi()
-	raspi2 := raspberry.NewRaspi()
+	raspi := raspberry.NewRaspi()
+	raspiClient := raspi.InitBroker()
 	thermometer1 := thermometer.NewThermometer()
 	thermometer2 := thermometer.NewThermometer()
-	go raspi1.GetData(usb1, thermometer1)
-	go raspi2.GetData(usb2, thermometer2)
+	go raspi.GetData(usb1, thermometer1)
+	go raspi.GetData(usb2, thermometer2)
 	for {
-		fmt.Println("Raspi 1 : ", <-usb1)
-		fmt.Println("Raspi 2 : ", <-usb2)
+		fmt.Println("Thermometer 1 : ", <-usb1)
+		fmt.Println("Thermometer 2 : ", <-usb2)
+		payload := fmt.Sprintf("Thermometer 1 : %v, Thermometer 2 : %v", <-usb1, <-usb2)
+		fmt.Println(payload)
+		raspi.Publish(raspiClient, "/demo/pp/1", payload)
 	}
 }
