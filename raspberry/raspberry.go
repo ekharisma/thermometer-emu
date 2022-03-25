@@ -8,6 +8,7 @@ import (
 )
 
 type MqttService interface {
+	// Initialize connection()
 	InitBroker() mqtt.Client
 	Publish(client mqtt.Client, topic string, payload string)
 	Subscribe(client mqtt.Client, topic string)
